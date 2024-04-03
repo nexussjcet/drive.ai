@@ -34,12 +34,7 @@ const Nav = (props: Props) => {
                 align="end"
                 className="absolute right-0 top-12"
               >
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                {/* card */}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

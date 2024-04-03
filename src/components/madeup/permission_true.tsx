@@ -302,7 +302,7 @@ export function Dashboard() {
         <main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-3">
           <div className="relative hidden flex-col items-start gap-8 md:flex">
             <form className="grid w-full items-start gap-6">
-              <fieldset className="grid gap-6 rounded-lg border p-4">
+              {/* <fieldset className="grid gap-6 rounded-lg border p-4">
                 <legend className="-ml-1 px-1 text-sm font-medium">
                   Settings
                 </legend>
@@ -381,7 +381,7 @@ export function Dashboard() {
                     <Input id="top-k" type="number" placeholder="0.0" />
                   </div>
                 </div>
-              </fieldset>
+              </fieldset> */}
               <fieldset className="grid gap-6 rounded-lg border p-4">
                 <legend className="-ml-1 px-1 text-sm font-medium">
                   Messages
