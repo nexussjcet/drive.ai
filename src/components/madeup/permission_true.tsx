@@ -402,7 +402,7 @@ export const Dashboard = ({ files, contacts }) => {
                           <div
                             className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full  text-opacity-10 ${getRandomColor()}`}
                           >
-                            {contact.names[0].givenName.slice(0, 1)}
+                            {contact?.names[0]?.givenName?.slice(0, 1)}
                           </div>
                         </TooltipTrigger>
                         <TooltipContent>
