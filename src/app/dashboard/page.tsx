@@ -1,5 +1,5 @@
 import SignoutButton from "./_components/signout";
-import { listGoogleContacts, listGoogleDriveFiles } from "./_actions";
+import { listGoogleContacts, listGoogleDriveFiles } from "../_actions";
 import Link from "next/link";
 
 const Dashboard = async () => {
