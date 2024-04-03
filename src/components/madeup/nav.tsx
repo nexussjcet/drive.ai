@@ -9,6 +9,7 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { CircleUser } from "lucide-react";
+import { CardDemo } from '@/components/madeup/permission_false'
 
 type Props = {};
 
@@ -34,7 +35,7 @@ const Nav = (props: Props) => {
                 align="end"
                 className="absolute right-0 top-12"
               >
-                {/* card */}
+                <CardDemo/>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
