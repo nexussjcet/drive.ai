@@ -53,13 +53,21 @@ const AvailableActions = {
 
 } satisfies AvailableActions
 
+export const AvailableActionsZod = z.object(AvailableActions)
+
+export const GetZodParam = <K extends keyof RawAvailableActions>(key: K) => {
+    return AvailableActions[key]._def.args.items[0]
+}
+
+export const GetZodReturn = <K extends keyof RawAvailableActions>(key: K) => {
+    return AvailableActions[key]._def.returns
+}
+// : Parameters<Infer<RawAvailableActions[K]>>
 export type RawAvailableActions = typeof AvailableActions
 export type RawAvailableActionsKeys = keyof typeof AvailableActions
 
-export const AvailableActionsZod = z.object(AvailableActions)
 
-export type GetActionParam<K extends keyof RawAvailableActions> = Parameters<Infer<RawAvailableActions[K]>>
+export type GetActionParam<K extends keyof RawAvailableActions> = Parameters<Infer<RawAvailableActions[K]>>[0]
 export type GetActionReturn<K extends keyof RawAvailableActions> = ReturnType<Infer<RawAvailableActions[K]>>
 
 export type AFC<K extends keyof RawAvailableActions> = React.FunctionComponent<{data:GetActionReturn<K>}>
-

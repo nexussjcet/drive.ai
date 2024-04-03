@@ -11,8 +11,10 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
+import { GetActionParam, GetActionReturn, RawAvailableActionsKeys } from "@/lib/schema";
 import { getServerAuthSession } from "@/server/auth";
 import { db } from "@/server/db";
+import { MutationProcedure, QueryProcedure, AnyProcedure } from "@trpc/server/unstable-core-do-not-import";
 
 /**
  * 1. CONTEXT
@@ -77,6 +79,15 @@ export const createCallerFactory = t.createCallerFactory;
  * @see https://trpc.io/docs/router
  */
 export const createTRPCRouter = t.router;
+type TRPCArg<K extends RawAvailableActionsKeys> = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  input: any
+  output:GetActionReturn<K>
+}
+type Func = (x:{
+  [key in Partial<RawAvailableActionsKeys>]:QueryProcedure<TRPCArg<key>> | MutationProcedure<TRPCArg<key>>
+}) => ReturnType<typeof createTRPCRouter>
+export const createTRPCRouterActions:Func = t.router
 
 /**
  * Public (unauthenticated) procedure
