@@ -58,11 +58,22 @@ import Timeline from "./progress";
 import { listGoogleDriveFiles } from "@/app/_actions";
 import Link from "next/link";
 import { urlUpdation } from "@/store/zustand";
-
+import { useState } from "react";
+type DashboardProps = {
+  files: any[]; // Update the type accordingly
+  contacts: any[]; // Update the type accordingly
+};
 export const Dashboard = ({ files, contacts }) => {
-  console.log(files, contacts);
-
+  const [searchQuery, setSearchQuery] = useState("");
+  const filteredFiles = files?.filter((file) =>
+    file.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
   const { url, updateUrl } = urlUpdation();
+  console.log(url);
+
   const getRandomColor = () => {
     const colors = [
       "bg-red-200",
@@ -362,25 +373,28 @@ export const Dashboard = ({ files, contacts }) => {
                 </legend>
                 <div className="grid gap-3">
                   {/* <Label htmlFor="role">Role</Label> */}
-                  <Input type="text" placeholder="Search" />
+                  <Input
+                    type="text"
+                    placeholder="Search"
+                    value={searchQuery}
+                    onChange={handleSearchInputChange}
+                  />
                 </div>
-                <div className="no-scrollbar grid h-[300px] gap-3 overflow-y-auto">
-                  {files?.map((file) => (
-                    <>
-                      <Button
-                        key={file.id}
-                        className="relative"
-                        variant="secondary"
-                        onClick={() => {
-                          updateUrl(
-                            `https://drive.google.com/file/d/${file.id}/preview`,
-                          );
-                        }}
-                      >
-                        <FileText className="absolute left-5 opacity-10" />
-                        {file.name}
-                      </Button>
-                    </>
+                <div className="no-scrollbar flex h-[300px] flex-col gap-3 overflow-y-auto">
+                  {filteredFiles?.map((file) => (
+                    <Button
+                      key={file.id}
+                      className="relative"
+                      variant="secondary"
+                      onClick={() => {
+                        updateUrl(
+                          `https://drive.google.com/file/d/${file.id}/preview`,
+                        );
+                      }}
+                    >
+                      <FileText className="absolute left-5 opacity-10" />
+                      {file.name}
+                    </Button>
                   ))}
                 </div>
               </fieldset>
@@ -412,7 +426,9 @@ export const Dashboard = ({ files, contacts }) => {
               </fieldset>
             </form>
           </div>
-          <div className="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2">
+          <div
+            className={`relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 transition-all delay-1000 ease-in-out ${!url ? "lg:col-span-3" : "lg:col-span-2"} `}
+          >
             <Badge variant="outline" className="absolute right-3 top-3">
               Output
             </Badge>
@@ -456,9 +472,11 @@ export const Dashboard = ({ files, contacts }) => {
               </div>
             </form>
           </div>
-          <div className="relative hidden flex-col items-start gap-8 md:flex">
-            <iframe src={url} width="100%" height="100%"></iframe>
-          </div>
+          {url && (
+            <div className="relative hidden flex-col items-start gap-8 md:flex">
+              <iframe src={url} width="100%" height="100%"></iframe>
+            </div>
+          )}
         </main>
       </div>
     </div>
