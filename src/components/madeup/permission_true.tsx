@@ -315,21 +315,12 @@ export function Dashboard() {
                     Messages
                   </legend>
                   <div className="grid gap-3">
-                    <Label htmlFor="role">Role</Label>
-                    <Select defaultValue="system">
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a role" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="system">System</SelectItem>
-                        <SelectItem value="user">User</SelectItem>
-                        <SelectItem value="assistant">Assistant</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    {/* <Label htmlFor="role">Role</Label> */}
+                    <Input type="text" placeholder="Search" />
                   </div>
                   <div className="grid gap-3">
-                    <Label htmlFor="content">Content</Label>
-                    <Textarea id="content" placeholder="You are a..." />
+                    {/* <Label htmlFor="content">Content</Label>
+                    <Textarea id="content" placeholder="You are a..." /> */}
                   </div>
                 </fieldset>
               </form>
@@ -424,25 +415,18 @@ export function Dashboard() {
                   Messages
                 </legend>
                 <div className="grid gap-3">
-                  <Label htmlFor="role">Role</Label>
-                  <Select defaultValue="system">
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a role" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="system">System</SelectItem>
-                      <SelectItem value="user">User</SelectItem>
-                      <SelectItem value="assistant">Assistant</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  {/* <Label htmlFor="role">Role</Label> */}
+                  <Input type="text" placeholder="Search" />
                 </div>
                 <div className="grid gap-3">
-                  <Label htmlFor="content">Content</Label>
+                  {/* <Label htmlFor="content">Content</Label>
                   <Textarea
                     id="content"
                     placeholder="You are a..."
                     className="min-h-[9.5rem]"
-                  />
+                  /> */}
+
+                  <p className="rounded-md bg-slate-300 p-2">Filename.txt</p>
                 </div>
               </fieldset>
             </form>
