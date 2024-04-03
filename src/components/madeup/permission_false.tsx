@@ -84,11 +84,11 @@ export function CardDemo({ className, ...props }: CardProps) {
           ))}
         </div> */}
       </CardContent>
-      <CardFooter>
+      {/* <CardFooter>
         <Button className="w-full">
           <CheckIcon className="mr-2 h-4 w-4" /> Mark all as read
         </Button>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   )
 }
