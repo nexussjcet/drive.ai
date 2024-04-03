@@ -1,7 +1,7 @@
-import { BellIcon, CheckIcon } from "@radix-ui/react-icons"
+import { BellIcon, CheckIcon } from "@radix-ui/react-icons";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,8 +9,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Switch } from "@/components/ui/switch"
+} from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import { DropdownMenuItem } from "../ui/dropdown-menu";
+import { signOut } from "next-auth/react";
 
 // const notifications = [
 //   {
@@ -31,7 +33,7 @@ import { Switch } from "@/components/ui/switch"
 //   }
 // ]
 
-type CardProps = React.ComponentProps<typeof Card>
+type CardProps = React.ComponentProps<typeof Card>;
 
 export function CardDemo({ className, ...props }: CardProps) {
   return (
@@ -65,6 +67,17 @@ export function CardDemo({ className, ...props }: CardProps) {
           </div>
           <Switch />
         </div>
+        <DropdownMenuItem
+          onClick={() => {
+            signOut({
+              redirect: true,
+              callbackUrl: "/",
+            });
+          }}
+        >
+          Log out
+          {/* <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut> */}
+        </DropdownMenuItem>
         {/* <div>
           {notifications.map((notification, index) => (
             <div
@@ -90,5 +103,5 @@ export function CardDemo({ className, ...props }: CardProps) {
         </Button>
       </CardFooter> */}
     </Card>
-  )
+  );
 }

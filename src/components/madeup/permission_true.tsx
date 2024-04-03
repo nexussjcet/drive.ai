@@ -59,6 +59,17 @@ import { listGoogleDriveFiles } from "@/app/_actions";
 import Link from "next/link";
 import { urlUpdation } from "@/store/zustand";
 import { useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { CardDemo } from "./permission_false";
+import React from "react";
 type DashboardProps = {
   files: any[]; // Update the type accordingly
   contacts: any[]; // Update the type accordingly
@@ -234,14 +245,24 @@ export const Dashboard = ({ files, contacts }) => {
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="mt-auto rounded-lg"
-                  aria-label="Account"
-                >
-                  <SquareUser className="size-5" />
-                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="mt-auto rounded-lg"
+                      aria-label="Account"
+                    >
+                      <SquareUser className="size-5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="end"
+                    className="absolute bottom-0 w-auto"
+                  >
+                    <CardDemo />
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </TooltipTrigger>
               <TooltipContent side="right" sideOffset={5}>
                 Account
@@ -407,11 +428,11 @@ export const Dashboard = ({ files, contacts }) => {
                 </div>
                 <div className="no-scrollbar flex h-[150px] flex-row flex-wrap gap-3 overflow-y-auto">
                   {contacts?.map((contact) => (
-                    <TooltipProvider>
+                    <TooltipProvider key={contact.id}>
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <div
-                            className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full  text-opacity-10 ${getRandomColor()}`}
+                            className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-opacity-10 ${getRandomColor()}`}
                           >
                             {contact.names[0].givenName.slice(0, 1)}
                           </div>
