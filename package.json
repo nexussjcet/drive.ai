@@ -53,6 +53,7 @@
     "clsx": "^2.1.0",
     "cmdk": "^1.0.0",
     "drizzle-orm": "^0.29.4",
+    "initiative": "^0.1.6",
     "embla-carousel-react": "^8.0.0",
     "input-otp": "^1.2.4",
     "lucid-ui": "^8.16.0",
