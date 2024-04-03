@@ -367,21 +367,6 @@ export const Dashboard = ({ files, contacts }) => {
                 <div className="no-scrollbar grid h-[300px] gap-3 overflow-y-auto">
                   {files?.map((file) => (
                     <>
-                      {/* <Dialog key={file.id}>
-                        <DialogTrigger asChild>
-                          <Button className="relative" variant="secondary">
-                            <FileText className="absolute left-5 opacity-10" />
-                            {file.name}
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent className="h-60 w-full max-w-[425px]">
-                          <iframe
-                            src={`https://drive.google.com/file/d/${file.id}/preview`}
-                            width="100%"
-                            height="100%"
-                          ></iframe>
-                        </DialogContent>
-                      </Dialog> */}
                       <Button
                         key={file.id}
                         className="relative"
@@ -405,19 +390,9 @@ export const Dashboard = ({ files, contacts }) => {
                 </legend>
                 <div className="grid gap-3">
                   {/* <Label htmlFor="role">Role</Label> */}
-                  <Input type="text" placeholder="Search" />
                 </div>
-                <div className="no-scrollbar flex h-[100px] flex-row flex-wrap gap-3 overflow-y-auto">
+                <div className="no-scrollbar flex h-[150px] flex-row flex-wrap gap-3 overflow-y-auto">
                   {contacts?.map((contact) => (
-                    // <Button
-                    //   key={contact.id}
-                    //   className="relative"
-                    //   variant="secondary"
-                    //   h-10
-                    //   w-10
-                    // >
-                    //   {/* {contact.names[0].givenName} */}
-                    // </Button>
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
