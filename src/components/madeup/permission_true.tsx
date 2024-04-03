@@ -55,7 +55,7 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
 import Timeline from "./progress";
-import { listGoogleDriveFiles } from "@/app/_actions";
+import { listGoogleDriveFiles } from "@/app/dashboard/_actions";
 import Link from "next/link";
 import { urlUpdation } from "@/store/zustand";
 
@@ -122,7 +122,7 @@ export const Dashboard = ({ files, contacts }) => {
       <aside className="inset-y fixed  left-0 z-20 flex h-full flex-col border-r">
         <div className="border-b p-2">
           <Button variant="outline" size="icon" aria-label="Home">
-            <Triangle className="size-5 fill-foreground" />
+            <Triangle className="fill-foreground size-5" />
           </Button>
         </div>
         <nav className="grid gap-1 p-2">
@@ -132,7 +132,7 @@ export const Dashboard = ({ files, contacts }) => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="rounded-lg bg-muted"
+                  className="bg-muted rounded-lg"
                   aria-label="Playground"
                 >
                   <SquareTerminal className="size-5" />
@@ -240,7 +240,7 @@ export const Dashboard = ({ files, contacts }) => {
         </nav>
       </aside>
       <div className="flex flex-col">
-        <header className="sticky top-0 z-10 flex h-[53px] items-center gap-1 border-b bg-background px-4">
+        <header className="bg-background sticky top-0 z-10 flex h-[53px] items-center gap-1 border-b px-4">
           <h1 className="text-xl font-semibold">Drive.ai</h1>
           <Drawer>
             <DrawerTrigger asChild>
@@ -272,12 +272,12 @@ export const Dashboard = ({ files, contacts }) => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="genesis">
-                          <div className="flex items-start gap-3 text-muted-foreground">
+                          <div className="text-muted-foreground flex items-start gap-3">
                             <Rabbit className="size-5" />
                             <div className="grid gap-0.5">
                               <p>
                                 Neural{" "}
-                                <span className="font-medium text-foreground">
+                                <span className="text-foreground font-medium">
                                   Genesis
                                 </span>
                               </p>
@@ -288,12 +288,12 @@ export const Dashboard = ({ files, contacts }) => {
                           </div>
                         </SelectItem>
                         <SelectItem value="explorer">
-                          <div className="flex items-start gap-3 text-muted-foreground">
+                          <div className="text-muted-foreground flex items-start gap-3">
                             <Bird className="size-5" />
                             <div className="grid gap-0.5">
                               <p>
                                 Neural{" "}
-                                <span className="font-medium text-foreground">
+                                <span className="text-foreground font-medium">
                                   Explorer
                                 </span>
                               </p>
@@ -304,12 +304,12 @@ export const Dashboard = ({ files, contacts }) => {
                           </div>
                         </SelectItem>
                         <SelectItem value="quantum">
-                          <div className="flex items-start gap-3 text-muted-foreground">
+                          <div className="text-muted-foreground flex items-start gap-3">
                             <Turtle className="size-5" />
                             <div className="grid gap-0.5">
                               <p>
                                 Neural{" "}
-                                <span className="font-medium text-foreground">
+                                <span className="text-foreground font-medium">
                                   Quantum
                                 </span>
                               </p>
@@ -367,7 +367,10 @@ export const Dashboard = ({ files, contacts }) => {
                 <div className="no-scrollbar grid h-[300px] gap-3 overflow-y-auto">
                   {files?.map((file) => (
                     <>
-                      <Button
+                      <Link href={`/${file.id}`}>
+                        <span className="text-blue-500">{file.name}</span>
+                      </Link>
+                      {/* <Button
                         key={file.id}
                         className="relative"
                         variant="secondary"
@@ -379,7 +382,7 @@ export const Dashboard = ({ files, contacts }) => {
                       >
                         <FileText className="absolute left-5 opacity-10" />
                         {file.name}
-                      </Button>
+                      </Button> */}
                     </>
                   ))}
                 </div>
@@ -412,14 +415,14 @@ export const Dashboard = ({ files, contacts }) => {
               </fieldset>
             </form>
           </div>
-          <div className="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2">
+          <div className="bg-muted/50 relative flex h-full min-h-[50vh] flex-col rounded-xl p-4 lg:col-span-2">
             <Badge variant="outline" className="absolute right-3 top-3">
               Output
             </Badge>
             <Timeline timelineData={defaultData} />
 
             <div className="flex-1" />
-            <form className="relative overflow-hidden rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring">
+            <form className="bg-background focus-within:ring-ring relative overflow-hidden rounded-lg border focus-within:ring-1">
               <Label htmlFor="message" className="sr-only">
                 Message
               </Label>
