@@ -55,7 +55,7 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
 import Timeline from "./progress";
-import { listGoogleDriveFiles } from "@/app/_actions";
+import { listGoogleDriveFiles } from "@/app/dashboard/_actions";
 import Link from "next/link";
 import { urlUpdation } from "@/store/zustand";
 import { useState } from "react";
@@ -401,21 +401,26 @@ export const Dashboard = ({ files, contacts }) => {
                     onChange={handleSearchInputChange}
                   />
                 </div>
-                <div className="no-scrollbar flex h-[300px] flex-col gap-3 overflow-y-auto">
-                  {filteredFiles?.map((file) => (
-                    <Button
-                      key={file.id}
-                      className="relative"
-                      variant="secondary"
-                      onClick={() => {
-                        updateUrl(
-                          `https://drive.google.com/file/d/${file.id}/preview`,
-                        );
-                      }}
-                    >
-                      <FileText className="absolute left-5 opacity-10" />
-                      {file.name}
-                    </Button>
+                <div className="no-scrollbar grid h-[300px] gap-3 overflow-y-auto">
+                  {files?.map((file) => (
+                    <>
+                      <Link href={`/${file.id}`}>
+                        <span className="text-blue-500">{file.name}</span>
+                      </Link>
+                      {/* <Button
+                        key={file.id}
+                        className="relative"
+                        variant="secondary"
+                        onClick={() => {
+                          updateUrl(
+                            `https://drive.google.com/file/d/${file.id}/preview`,
+                          );
+                        }}
+                      >
+                        <FileText className="absolute left-5 opacity-10" />
+                        {file.name}
+                      </Button> */}
+                    </>
                   ))}
                 </div>
               </fieldset>
@@ -434,7 +439,7 @@ export const Dashboard = ({ files, contacts }) => {
                           <div
                             className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-opacity-10 ${getRandomColor()}`}
                           >
-                            {contact.names[0].givenName.slice(0, 1)}
+                            {contact?.names[0]?.givenName?.slice(0, 1)}
                           </div>
                         </TooltipTrigger>
                         <TooltipContent>
@@ -447,9 +452,7 @@ export const Dashboard = ({ files, contacts }) => {
               </fieldset>
             </form>
           </div>
-          <div
-            className={`relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 transition-all delay-1000 ease-in-out ${!url ? "lg:col-span-3" : "lg:col-span-2"} `}
-          >
+          <div className="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2">
             <Badge variant="outline" className="absolute right-3 top-3">
               Output
             </Badge>

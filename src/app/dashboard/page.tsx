@@ -1,29 +1,9 @@
-import SignoutButton from "./_components/signout";
-import { listGoogleContacts, listGoogleDriveFiles } from "../_actions";
-import Link from "next/link";
-
-const Dashboard = async () => {
-  const files = await listGoogleDriveFiles();
-  const contacts = await listGoogleContacts();
-
+const Dash = async () => {
   return (
-    <div>
-      <SignoutButton />
-      <pre>{JSON.stringify(contacts, null, 4)}</pre>
-      {files && (
-        <ul>
-          {files.map((file) => (
-            <li key={file.id}>
-              {file.name} ({file.mimeType})
-              <Link href={`/dashboard/${file.id}`}>
-                <>View</>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+    <div className="flex h-full items-center justify-center text-center">
+      Preview
     </div>
   );
 };
 
-export default Dashboard;
+export default Dash;
