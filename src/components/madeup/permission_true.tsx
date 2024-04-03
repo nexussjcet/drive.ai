@@ -46,6 +46,51 @@ import {
 import Timeline from "./progress";
 
 export function Dashboard() {
+  const defaultData = [
+    {
+      value: "searching file",
+      key: "searchFile",
+      iteration: 0,
+      permission: true,
+    },
+    {
+      value: "reading file",
+      key: "readFile",
+      iteration: 1,
+      permission: true,
+    },
+    {
+      value: "writing file",
+      key: "writeFile",
+      iteration: 2,
+      permission: true,
+    },
+    {
+      value: "converting file",
+      key: "convertFileFromTo",
+      iteration: 3,
+      permission: false,
+    },
+    // {
+    //   value: "summarizing file",
+    //   key: "summarizeText",
+    //   iteration: 4,
+    //   permission: true,
+    // },
+    // {
+    //   value: "searching contact",
+    //   key: "findContact",
+    //   iteration: 5,
+    //   permission: true,
+    // },
+    // {
+    //   value: "sending email",
+    //   key: "sentEmail",
+    //   iteration: 6,
+    //   permission: true,
+    // },
+  ];
+
   return (
     <div className="grid h-screen w-full pl-[53px]">
       <aside className="inset-y fixed  left-0 z-20 flex h-full flex-col border-r">
@@ -406,7 +451,7 @@ export function Dashboard() {
             <Badge variant="outline" className="absolute right-3 top-3">
               Output
             </Badge>
-            <Timeline />
+            <Timeline timelineData={defaultData} />
 
             <div className="flex-1" />
             <form className="relative overflow-hidden rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring">
