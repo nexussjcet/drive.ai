@@ -1,11 +1,10 @@
-//   createTRPCRouterActions,
 import { GetZodParam } from "@/lib/schema";
-import { createTRPCRouterActions, publicProcedure } from "@/server/api/trpc";
+import { createTRPCRouterActions, publicProcedure, protectedProcedure } from "@/server/api/trpc";
 
 export const actionRouter = createTRPCRouterActions({
-  convertFileFromTo: publicProcedure
+  convertFileFromTo: protectedProcedure
     .input(GetZodParam("convertFileFromTo"))
-    .mutation(({ input }) => {
+    .mutation(({ input, ctx }) => {
       return "success";
     }),
     readFile: publicProcedure

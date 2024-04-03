@@ -37,7 +37,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
     ...opts,
   };
 };
-
+export type TRPCContext = typeof createTRPCContext
 /**
  * 2. INITIALIZATION
  *
