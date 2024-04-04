@@ -58,11 +58,33 @@ import Timeline from "./progress";
 import { listGoogleDriveFiles } from "@/app/dashboard/_actions";
 import Link from "next/link";
 import { urlUpdation } from "@/store/zustand";
-
+import { useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { CardDemo } from "./permission_false";
+import React from "react";
+type DashboardProps = {
+  files: any[]; // Update the type accordingly
+  contacts: any[]; // Update the type accordingly
+};
 export const Dashboard = ({ files, contacts }) => {
-  console.log(files, contacts);
-
+  const [searchQuery, setSearchQuery] = useState("");
+  const filteredFiles = files?.filter((file) =>
+    file.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
   const { url, updateUrl } = urlUpdation();
+  console.log(url);
+
   const getRandomColor = () => {
     const colors = [
       "bg-red-200",
@@ -122,7 +144,7 @@ export const Dashboard = ({ files, contacts }) => {
       <aside className="inset-y fixed  left-0 z-20 flex h-full flex-col border-r">
         <div className="border-b p-2">
           <Button variant="outline" size="icon" aria-label="Home">
-            <Triangle className="fill-foreground size-5" />
+            <Triangle className="size-5 fill-foreground" />
           </Button>
         </div>
         <nav className="grid gap-1 p-2">
@@ -132,7 +154,7 @@ export const Dashboard = ({ files, contacts }) => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="bg-muted rounded-lg"
+                  className="rounded-lg bg-muted"
                   aria-label="Playground"
                 >
                   <SquareTerminal className="size-5" />
@@ -223,14 +245,24 @@ export const Dashboard = ({ files, contacts }) => {
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="mt-auto rounded-lg"
-                  aria-label="Account"
-                >
-                  <SquareUser className="size-5" />
-                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="mt-auto rounded-lg"
+                      aria-label="Account"
+                    >
+                      <SquareUser className="size-5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="end"
+                    className="absolute bottom-0 w-auto"
+                  >
+                    <CardDemo />
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </TooltipTrigger>
               <TooltipContent side="right" sideOffset={5}>
                 Account
@@ -240,7 +272,7 @@ export const Dashboard = ({ files, contacts }) => {
         </nav>
       </aside>
       <div className="flex flex-col">
-        <header className="bg-background sticky top-0 z-10 flex h-[53px] items-center gap-1 border-b px-4">
+        <header className="sticky top-0 z-10 flex h-[53px] items-center gap-1 border-b bg-background px-4">
           <h1 className="text-xl font-semibold">Drive.ai</h1>
           <Drawer>
             <DrawerTrigger asChild>
@@ -272,12 +304,12 @@ export const Dashboard = ({ files, contacts }) => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="genesis">
-                          <div className="text-muted-foreground flex items-start gap-3">
+                          <div className="flex items-start gap-3 text-muted-foreground">
                             <Rabbit className="size-5" />
                             <div className="grid gap-0.5">
                               <p>
                                 Neural{" "}
-                                <span className="text-foreground font-medium">
+                                <span className="font-medium text-foreground">
                                   Genesis
                                 </span>
                               </p>
@@ -288,12 +320,12 @@ export const Dashboard = ({ files, contacts }) => {
                           </div>
                         </SelectItem>
                         <SelectItem value="explorer">
-                          <div className="text-muted-foreground flex items-start gap-3">
+                          <div className="flex items-start gap-3 text-muted-foreground">
                             <Bird className="size-5" />
                             <div className="grid gap-0.5">
                               <p>
                                 Neural{" "}
-                                <span className="text-foreground font-medium">
+                                <span className="font-medium text-foreground">
                                   Explorer
                                 </span>
                               </p>
@@ -304,12 +336,12 @@ export const Dashboard = ({ files, contacts }) => {
                           </div>
                         </SelectItem>
                         <SelectItem value="quantum">
-                          <div className="text-muted-foreground flex items-start gap-3">
+                          <div className="flex items-start gap-3 text-muted-foreground">
                             <Turtle className="size-5" />
                             <div className="grid gap-0.5">
                               <p>
                                 Neural{" "}
-                                <span className="text-foreground font-medium">
+                                <span className="font-medium text-foreground">
                                   Quantum
                                 </span>
                               </p>
@@ -362,7 +394,12 @@ export const Dashboard = ({ files, contacts }) => {
                 </legend>
                 <div className="grid gap-3">
                   {/* <Label htmlFor="role">Role</Label> */}
-                  <Input type="text" placeholder="Search" />
+                  <Input
+                    type="text"
+                    placeholder="Search"
+                    value={searchQuery}
+                    onChange={handleSearchInputChange}
+                  />
                 </div>
                 <div className="no-scrollbar grid h-[300px] gap-3 overflow-y-auto">
                   {files?.map((file) => (
@@ -396,11 +433,11 @@ export const Dashboard = ({ files, contacts }) => {
                 </div>
                 <div className="no-scrollbar flex h-[150px] flex-row flex-wrap gap-3 overflow-y-auto">
                   {contacts?.map((contact) => (
-                    <TooltipProvider>
+                    <TooltipProvider key={contact.id}>
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <div
-                            className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full  text-opacity-10 ${getRandomColor()}`}
+                            className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-opacity-10 ${getRandomColor()}`}
                           >
                             {contact?.names[0]?.givenName?.slice(0, 1)}
                           </div>
@@ -415,14 +452,14 @@ export const Dashboard = ({ files, contacts }) => {
               </fieldset>
             </form>
           </div>
-          <div className="bg-muted/50 relative flex h-full min-h-[50vh] flex-col rounded-xl p-4 lg:col-span-2">
+          <div className="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2">
             <Badge variant="outline" className="absolute right-3 top-3">
               Output
             </Badge>
             <Timeline timelineData={defaultData} />
 
             <div className="flex-1" />
-            <form className="bg-background focus-within:ring-ring relative overflow-hidden rounded-lg border focus-within:ring-1">
+            <form className="relative overflow-hidden rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring">
               <Label htmlFor="message" className="sr-only">
                 Message
               </Label>
@@ -459,9 +496,11 @@ export const Dashboard = ({ files, contacts }) => {
               </div>
             </form>
           </div>
-          <div className="relative hidden flex-col items-start gap-8 md:flex">
-            <iframe src={url} width="100%" height="100%"></iframe>
-          </div>
+          {url && (
+            <div className="relative hidden flex-col items-start gap-8 md:flex">
+              <iframe src={url} width="100%" height="100%"></iframe>
+            </div>
+          )}
         </main>
       </div>
     </div>

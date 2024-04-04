@@ -1,7 +1,11 @@
 import { TogetherAI } from "@langchain/community/llms/togetherai";
 import { createExtraction, chainedActionPrompt } from "@/initiative";
 import { type ExtraParams, Schema, UserState, AllowALL } from "./schema";
-import { executeChainActions, getZodChainedCombined, implementChain } from "@/initiative/chain";
+import {
+  executeChainActions,
+  getZodChainedCombined,
+  implementChain,
+} from "@/initiative/chain";
 import { sendEmail } from "@/app/dashboard/_actions";
 
 export const model = new TogetherAI({
@@ -17,21 +21,23 @@ export const init = implementChain(Schema, materials, {
       fileSourceType,
       text,
     }) => {
-      const res =  await model.invoke(`Just Convert the ${fileSourceType} text  to ${fileDestinationType}. Dont write code. DOnt explain anything. Just convert like normal. Dont add styles. Text:'${text}'`);
-      return { text: res};
+      const res = await model.invoke(
+        `Just Convert the ${fileSourceType} text  to ${fileDestinationType}. Dont write code. DOnt explain anything. Just convert like normal. Dont add styles. Text:'${text}'`,
+      );
+      return { text: res };
     },
     readFile: async () => await Promise.resolve({ text: "success" }),
-    findOneContact: async ({name}) => {
-      return { name: "unknown", email: "unknown" }
+    findOneContact: async ({ name }) => {
+      return { name: "unknown", email: "unknown" };
       // console.log(state?.listOfContacts)
       // return state?.listOfContacts.find((c) => c.name.includes(name)) ?? { name: "unknown", email: "unknown" }
     },
     searchFile: async () => await Promise.resolve([{ fileSource: "success" }]),
     searchOneFile: async () => await Promise.resolve({ fileSource: "success" }),
     openFile: async () => await Promise.resolve({ status: "success" }),
-    sentEmail: async ({email, text}) => {
-      await sendEmail(email, "Email from Drive AI", text)
-      return {status: "success"}
+    sentEmail: async ({ email, text }) => {
+      await sendEmail(email, "Email from Drive AI", text);
+      return { status: "success" };
     },
     summarizeText: async ({ text }) => {
       const res = await model.invoke(
@@ -76,15 +82,16 @@ export const init = implementChain(Schema, materials, {
       ],
     },
     {
-      Input: "Find and read markdown file 'file.md' and summarize it, sent it to user named 'Rajat'",
+      Input:
+        "Find and read markdown file 'file.md' and summarize it, sent it to user named 'Rajat'",
       Output: [
         { searchFile: { fileName: "file.md" } },
-        { readFile: { fileSource: "unknown", fileType:"markdown" } },
+        { readFile: { fileSource: "unknown", fileType: "markdown" } },
         { summarizeText: { text: "unknown" } },
         { findContact: { name: "Rajat" } },
         { sentEmail: { email: "unknown", text: "unknown" } },
       ],
-    }
+    },
   ],
 });
 

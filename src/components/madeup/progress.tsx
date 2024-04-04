@@ -9,12 +9,15 @@ import {
   Send,
   Shrink,
 } from "lucide-react";
+import { Card, CardContent } from "../ui/card";
+import { Button } from "../ui/button";
 
 type TimelineData = {
   value: string;
   key: string;
   iteration: number;
   permission: boolean;
+  error?: string;
 };
 
 import { summarizeText as SummarizeText } from "../instances/summarizeText";
