@@ -28,7 +28,7 @@ const SearchItems = ({ files }: { files: { id: string; name: string }[] }) => {
       <div className="grid gap-3">
         <Input type="text" placeholder="Search" onChange={handleChange} />
       </div>
-      <div className="no-scrollbar grid max-h-[600px] gap-4 overflow-y-auto">
+      <div className="no-scrollbar grid max-h-[370px] gap-4 overflow-y-auto">
         {!file?.length && <div className="text-center">No files found</div>}
         {file?.map((file) => (
           <Button

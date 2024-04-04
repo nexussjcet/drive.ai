@@ -51,6 +51,7 @@ async function listGoogleContacts() {
     const contactsResponse = await people.people.connections.list({
       resourceName: "people/me",
       pageSize: 50,
+      // fields: "",
       personFields: "names,emailAddresses",
     });
     const contacts = contactsResponse.data.connections;
