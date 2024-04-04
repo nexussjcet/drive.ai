@@ -50,14 +50,65 @@ import Link from "next/link";
 import { Providers } from "./provider";
 import SignoutButton from "./_components/signout";
 import SearchItems from "./_components/SearchItems";
+import Timeline from "@/components/madeup/progress";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession();
   const files = await listGoogleDriveFiles();
   const contacts = await listGoogleContacts();
 
+  const defaultData = [
+    {
+      value: "searching file",
+      key: "searchFile",
+      iteration: 0,
+      permission: true,
+    },
+    {
+      value: "reading file",
+      key: "readFile",
+      iteration: 1,
+      permission: true,
+    },
+    {
+      value: "writing file",
+      key: "writeFile",
+      iteration: 2,
+      permission: true,
+    },
+    {
+      value: "converting file",
+      key: "convertFileFromTo",
+      iteration: 3,
+      permission: false,
+    },
+    {
+      value: "summarizing file",
+      key: "summarizeText",
+      iteration: 4,
+      permission: true,
+    },
+    {
+      value: "searching contact",
+      key: "findContact",
+      iteration: 5,
+      permission: true,
+    },
+    {
+      value: "sending email",
+      key: "sentEmail",
+      iteration: 6,
+      permission: true,
+    },
+  ];
+  if (!session) {
+    redirect("/api/auth/signin");
+  }
   return (
     <Providers>
       <>
@@ -65,7 +116,7 @@ export default async function RootLayout({
           <aside className="inset-y fixed  left-0 z-20 flex h-full flex-col border-r">
             <div className="border-b p-2">
               <Button variant="outline" size="icon" aria-label="Home">
-                <Triangle className="fill-foreground size-5" />
+                <Triangle className="size-5 fill-foreground" />
               </Button>
             </div>
             <nav className="grid gap-1 p-2">
@@ -75,7 +126,7 @@ export default async function RootLayout({
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="bg-muted rounded-lg"
+                      className="rounded-lg bg-muted"
                       aria-label="Playground"
                     >
                       <SquareTerminal className="size-5" />
@@ -183,7 +234,7 @@ export default async function RootLayout({
             </nav>
           </aside>
           <div className="flex flex-col">
-            <header className="bg-background sticky top-0 z-10 flex h-[53px] items-center gap-1 border-b px-4">
+            <header className="sticky top-0 z-10 flex h-[53px] items-center gap-1 border-b bg-background px-4">
               <div className="flex w-full items-center justify-between">
                 <h1 className="text-xl font-semibold">Drive.ai</h1>
                 <SignoutButton />
@@ -195,7 +246,7 @@ export default async function RootLayout({
                     <span className="sr-only">Settings</span>
                   </Button>
                 </DrawerTrigger>
-                <DrawerContent className="max-h-[80vh]">
+                <DrawerContent className="max-h-[300px]">
                   <DrawerHeader>
                     <DrawerTitle>Configuration</DrawerTitle>
                     <DrawerDescription>
@@ -218,12 +269,12 @@ export default async function RootLayout({
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="genesis">
-                              <div className="text-muted-foreground flex items-start gap-3">
+                              <div className="flex items-start gap-3 text-muted-foreground">
                                 <Rabbit className="size-5" />
                                 <div className="grid gap-0.5">
                                   <p>
                                     Neural{" "}
-                                    <span className="text-foreground font-medium">
+                                    <span className="font-medium text-foreground">
                                       Genesis
                                     </span>
                                   </p>
@@ -234,12 +285,12 @@ export default async function RootLayout({
                               </div>
                             </SelectItem>
                             <SelectItem value="explorer">
-                              <div className="text-muted-foreground flex items-start gap-3">
+                              <div className="flex items-start gap-3 text-muted-foreground">
                                 <Bird className="size-5" />
                                 <div className="grid gap-0.5">
                                   <p>
                                     Neural{" "}
-                                    <span className="text-foreground font-medium">
+                                    <span className="font-medium text-foreground">
                                       Explorer
                                     </span>
                                   </p>
@@ -250,12 +301,12 @@ export default async function RootLayout({
                               </div>
                             </SelectItem>
                             <SelectItem value="quantum">
-                              <div className="text-muted-foreground flex items-start gap-3">
+                              <div className="flex items-start gap-3 text-muted-foreground">
                                 <Turtle className="size-5" />
                                 <div className="grid gap-0.5">
                                   <p>
                                     Neural{" "}
-                                    <span className="text-foreground font-medium">
+                                    <span className="font-medium text-foreground">
                                       Quantum
                                     </span>
                                   </p>
@@ -329,9 +380,7 @@ export default async function RootLayout({
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
-                                <div
-                                  className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full  text-opacity-10 ${getRandomColor()}`}
-                                >
+                                <div className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-300  text-opacity-10">
                                   {contact.names?.[0]?.givenName?.slice(0, 1) ??
                                     ""}
                                 </div>
@@ -347,14 +396,14 @@ export default async function RootLayout({
                   </fieldset>
                 </div>
               </div>
-              <div className="bg-muted/50 relative flex h-full min-h-[50vh] flex-col rounded-xl p-4 lg:col-span-2">
+              <div className="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2">
                 <Badge variant="outline" className="absolute right-3 top-3">
                   Output
                 </Badge>
-                {/* <Timeline timelineData={defaultData} /> */}
+                <Timeline timelineData={defaultData} />
 
                 <div className="flex-1" />
-                <form className="bg-background focus-within:ring-ring relative overflow-hidden rounded-lg border focus-within:ring-1">
+                <form className="relative overflow-hidden rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring">
                   <Label htmlFor="message" className="sr-only">
                     Message
                   </Label>

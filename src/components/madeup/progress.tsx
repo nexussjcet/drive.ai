@@ -7,6 +7,7 @@ import {
   Shrink,
 } from "lucide-react";
 import React from "react";
+import { Card, CardContent } from "../ui/card";
 
 type TimelineData = {
   value: string;
@@ -65,29 +66,33 @@ const Timeline: React.FC<TimelineProps> = ({ timelineData }) => {
   };
 
   return (
-    <ol className="timeline max-w-700 mx-auto flex h-[500px] w-96 flex-col border-l-2 border-gray-200 py-8 pl-8 text-base ">
-      {timelineData.map((data, index) => (
-        <li key={index} className="timeline-item mt-8 flex gap-8">
-          <span className="timeline-item-icon -ml-14 flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-100 text-gray-400">
-            {getIcon(data.value)}
-          </span>
-          <div
-            className={`timeline-item-description flex items-center  rounded-xl ${
-              data.permission
-                ? "bg-green-200"
-                : !data.permission
-                  ? "bg-red-400"
-                  : getRandomColor()
-            } p-5`}
-          >
-            <p className="flex items-center gap-5 rounded-xl">
-              {getIcon(data.value)}
-              {data.value}
-            </p>
-          </div>
-        </li>
-      ))}
-    </ol>
+    <Card className="no-scrollbar flex max-h-[500px] w-[380px]  justify-center overflow-scroll px-10 py-5">
+      <CardContent>
+        <ol className="timeline max-w-700 mx-auto flex flex-col border-l-2 border-gray-200 py-8 pl-8 text-base ">
+          {timelineData.map((data, index) => (
+            <li key={index} className="timeline-item mt-8 flex gap-8">
+              <span className="timeline-item-icon -ml-14 flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-100 text-gray-400">
+                {getIcon(data.value)}
+              </span>
+              <div
+                className={`timeline-item-description flex items-center  rounded-xl ${
+                  data.permission
+                    ? "bg-green-200"
+                    : !data.permission
+                      ? "bg-red-400"
+                      : getRandomColor()
+                } p-2`}
+              >
+                <p className="flex items-center gap-5 rounded-xl">
+                  {getIcon(data.value)}
+                  {data.value}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </CardContent>
+    </Card>
   );
 };
 
