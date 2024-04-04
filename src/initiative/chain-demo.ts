@@ -105,7 +105,7 @@ console.log(res.response.validated?.success ? res.response.validated.data : "");
 const x = await executeChainActions(Schema, init, res, {
   permissions: {
     searchUserWithName: true,
-    sentEmailToUser: true,
+    sentEmailToUser: false,
     createSummary: true,
   },
   params: {
