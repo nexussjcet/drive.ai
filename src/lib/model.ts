@@ -1,8 +1,12 @@
 import { TogetherAI } from "@langchain/community/llms/togetherai";
 import { createExtraction, chainedActionPrompt } from "@/initiative";
 import { type ExtraParams, Schema, UserState, AllowALL } from "./schema";
-import { executeChainActions, getZodChainedCombined, implementChain } from "@/initiative/chain";
-import pandoc from "pandoc";
+import {
+  executeChainActions,
+  getZodChainedCombined,
+  implementChain,
+} from "@/initiative/chain";
+// import pandoc from "pandoc";
 
 export const model = new TogetherAI({
   modelName: "mistralai/Mixtral-8x7B-Instruct-v0.1",
@@ -18,14 +22,14 @@ export const init = implementChain(Schema, materials, {
       text,
     }) => {
       let resultText = "";
-      pandoc.convert(
-        fileSourceType,
-        text,
-        [fileDestinationType],
-        (result, err) => {
-          resultText = result[fileDestinationType];
-        },
-      );
+      // pandoc.convert(
+      //   fileSourceType,
+      //   text,
+      //   [fileDestinationType],
+      //   (result, err) => {
+      //     resultText = result[fileDestinationType];
+      //   },
+      // );
       return { text: resultText };
     },
     readFile: async () => await Promise.resolve({ text: "success" }),
@@ -78,15 +82,16 @@ export const init = implementChain(Schema, materials, {
       ],
     },
     {
-      Input: "Find and read markdown file 'file.md' and summarize it, sent it to user named 'Rajat'",
+      Input:
+        "Find and read markdown file 'file.md' and summarize it, sent it to user named 'Rajat'",
       Output: [
         { searchFile: { fileName: "file.md" } },
-        { readFile: { fileSource: "unknown", fileType:"markdown" } },
+        { readFile: { fileSource: "unknown", fileType: "markdown" } },
         { summarizeText: { text: "unknown" } },
         { findContact: { name: "Rajat" } },
         { sentEmail: { email: "unknown", text: "unknown" } },
       ],
-    }
+    },
   ],
 });
 
@@ -101,7 +106,9 @@ export const chain = await createExtraction(
   chainedActionPrompt,
 );
 
-const res = await chain.invoke("Convert markdown to html, text:'# Header \n ## Header'");
+const res = await chain.invoke(
+  "Convert markdown to html, text:'# Header \n ## Header'",
+);
 
 console.log(res.response.validated?.success ? res.response.validated.data : "");
 
