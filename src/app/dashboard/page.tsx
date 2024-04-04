@@ -1,5 +1,7 @@
 import { sendEmail } from "./_actions";
 
+import Image from "next/image";
+
 const Dash = async () => {
   // Assuming you have already imported and defined the sendEmail function
 
@@ -11,9 +13,14 @@ const Dash = async () => {
   const data = await sendEmail(recipient, subject, body);
 
   return (
-    <div className="flex h-full items-center justify-center text-center">
-      Preview
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+    <div className="flex h-full items-center justify-center rounded-xl bg-muted/90 text-center">
+      <Image
+        className="grayscale-[50%]"
+        src="/illu.png"
+        alt="Empty"
+        width={500}
+        height={500}
+      />
     </div>
   );
 };
