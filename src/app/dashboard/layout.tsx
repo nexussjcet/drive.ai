@@ -95,24 +95,24 @@ export default async function RootLayout({
       iteration: 3,
       permission: false,
     },
-    {
-      value: "summarizing file",
-      key: "summarizeText",
-      iteration: 4,
-      permission: true,
-    },
-    {
-      value: "searching contact",
-      key: "findContact",
-      iteration: 5,
-      permission: true,
-    },
-    {
-      value: "sending email",
-      key: "sentEmail",
-      iteration: 6,
-      permission: true,
-    },
+    // {
+    //   value: "summarizing file",
+    //   key: "summarizeText",
+    //   iteration: 4,
+    //   permission: true,
+    // },
+    // {
+    //   value: "searching contact",
+    //   key: "findContact",
+    //   iteration: 5,
+    //   permission: true,
+    // },
+    // {
+    //   value: "sending email",
+    //   key: "sentEmail",
+    //   iteration: 6,
+    //   permission: true,
+    // },
   ];
   if (!session) {
     redirect("/api/auth/signin");
