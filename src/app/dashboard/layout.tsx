@@ -109,6 +109,15 @@ export default async function RootLayout({
   if (!session) {
     redirect("/api/auth/signin");
   }
+  const getRandomColor = () => {
+    const colors = [
+      "bg-red-200",
+      "bg-blue-200",
+      "bg-green-200",
+      "bg-yellow-200",
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
   return (
     <Providers>
       <>
@@ -380,7 +389,9 @@ export default async function RootLayout({
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
-                                <div className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-300  text-opacity-10">
+                                <div
+                                  className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full   text-opacity-10 ${getRandomColor()}`}
+                                >
                                   {contact.names?.[0]?.givenName?.slice(0, 1) ??
                                     ""}
                                 </div>
