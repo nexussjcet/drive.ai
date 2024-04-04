@@ -1,11 +1,10 @@
 import { type AFC } from "@/lib/schema";
+import { Button } from "../ui/button";
 
-const sentEmail:AFC<"sentEmail"> = ({data}) => {
+export const sentEmail:AFC<"sentEmail"> = ({data}) => {
     return ( 
         <div>
-            <div>{data}</div>
+            <Button variant={"destructive"}>{data.status}</Button>
         </div>
      );
 }
- 
-export default sentEmail;

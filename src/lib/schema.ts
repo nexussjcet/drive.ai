@@ -19,10 +19,12 @@ const text = z.object({
   text: z.string(),
 });
 
-export const UserState = {} satisfies State;
+export const UserState = {
+  // listOfContacts: z.array(z.object({ name: z.string(), email: z.string() }))
+} satisfies State;
 export type ExtraParams = {
-  ctx: CTX | null;
-  //   extra: {},
+  ctx: CTX;
+  extra: object,
 };
 
 export const Schema = {
@@ -85,14 +87,6 @@ export const Schema = {
     )
     .args(z.object({ email: z.string(), text: z.string() }))
     .returns(status),
-
-  findContact: z
-    .function()
-    .describe(
-      "When user wants to search & find many contacts by name, not depending on execution order. ",
-    )
-    .args(z.object({ name: z.string() }))
-    .returns(z.array(z.object({ name: z.string(), email: z.string() }))),
 
   findOneContact: z
     .function()

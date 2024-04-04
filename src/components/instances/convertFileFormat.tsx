@@ -1,6 +1,6 @@
 import { type AFC } from "@/lib/schema";
 
-export const summarizeText:AFC<"summarizeText"> = ({data}) => {
+export const convertFileFormat:AFC<"convertFileFormat"> = ({data}) => {
     return ( 
         <div>
             <div>{data.text}</div>

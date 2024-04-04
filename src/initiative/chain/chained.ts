@@ -50,7 +50,7 @@ export const getZodChainedCombined = <
     AvailableActions.push(key);
   }
 
-  const stateZod = state ? z.object(state) : undefined;
+  const stateZod = state ? z.object(state).partial().optional() : undefined;
   const AvailableActionsType = `type AvailableActions = ${AvailableActions.map(
     (x) => `{${x}: ${x}}`
   ).join(" | ")}`;

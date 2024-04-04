@@ -27,5 +27,3 @@ const InputPrompt = () => {
     </>
      );
 }
- 
-export default InputPrompt;
