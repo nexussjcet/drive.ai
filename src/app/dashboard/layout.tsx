@@ -420,7 +420,7 @@ export default async function RootLayout({
                   </fieldset>
                 </div>
               </div>
-              <div className="relative flex h-full min-h-[50vh] flex-col self-center rounded-xl bg-muted/50 p-4 lg:col-span-2">
+              <div className="relative flex h-full min-h-[50vh] flex-col self-center rounded-xl bg-muted/70 p-4 lg:col-span-2">
                 <Badge variant="outline" className="absolute right-3 top-3">
                   Process
                 </Badge>

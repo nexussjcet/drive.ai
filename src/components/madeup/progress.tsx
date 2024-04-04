@@ -68,7 +68,7 @@ const Timeline: React.FC<TimelineProps> = ({ timelineData }) => {
   };
 
   return (
-    <Card className="no-scrollbar flex max-h-[500px] w-[380px]  justify-center overflow-scroll px-10 py-5">
+    <Card className="no-scrollbar m-auto flex max-h-[500px] w-[380px] justify-center overflow-scroll px-10 py-5">
       <CardContent>
         <ol className="timeline max-w-700 mx-auto flex flex-col border-l-2 border-gray-200 py-8 pl-8 text-base ">
           {timelineData.map((data, index) => (
