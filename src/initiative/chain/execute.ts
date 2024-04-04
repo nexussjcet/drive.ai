@@ -54,17 +54,20 @@ export const executeChainActions = async <
   );
 
   const storage = new Map();
-  const setOfFunctionResult = [];
+  const setOfFunctionResult = [] as ChainResponse<A>;
   let iteration = 0;
   for (const action of chainActions) {
     const func = Object.entries(action)[0];
-    if (!func)
+    if (!func) {
       setOfFunctionResult.push({
         key: "0",
         error: new Error("Entries error in funcs"),
         iteration,
         permission: false,
       });
+      iteration++;
+      break;
+    }
 
     const [key, value] = func as [string, Parameters<Infer<A[keyof A]>>];
 
@@ -73,7 +76,6 @@ export const executeChainActions = async <
         if (typeof v === "string") {
           if (v.includes("unknown")) {
             const newV = storage.get(k);
-            // console.log(k, "newV", newV)
             value[k] = newV;
           } else storage.set(k, v);
         }
@@ -82,28 +84,33 @@ export const executeChainActions = async <
 
     const eachPermission = permissions[key];
 
-    if (!(key in setOfFunctions))
+    if (!(key in setOfFunctions)) {
       setOfFunctionResult.push({
         key,
         iteration,
         permission: eachPermission,
         error: new Error(`Function "${key}" is not implemented`),
       });
+      iteration++;
+      break;
+    }
 
-    if (!eachPermission)
+    if (!eachPermission) {
       setOfFunctionResult.push({
         key,
         iteration,
         permission: eachPermission,
         error: new Error(`Execution of function "${key}" is not permitted`),
       });
+      iteration++;
+      break;
+    }
 
     const valueFunc =
       await setOfFunctions[key as keyof typeof setOfFunctions](value);
 
     if (typeof valueFunc === "object") {
       Object.entries(valueFunc).forEach(([k, v]) => {
-        // console.log(value, k, v)
         storage.set(k, v);
       });
     }

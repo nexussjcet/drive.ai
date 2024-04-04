@@ -24,8 +24,13 @@ const Schema = {
   sentEmailToUser: z
     .function()
     .describe("When action is requisting to sent an email to someone. Pass name of user as param.")
-    .args(z.object({ email: z.string() }))
+    .args(z.object({ email: z.string(), text: z.string() }))
     .returns(z.string()),
+  createSummary: z
+    .function()
+    .describe("When action is requisting to create a summary of text. Pass text as param.")
+    .args(z.object({ text: z.string() }))
+    .returns(z.object({ text: z.string() })),
 } satisfies AvailableActions;
 
 const userState = {
@@ -50,7 +55,8 @@ const materials = getZodChainedCombined(Schema, userState);
 const init = implementChain(Schema, materials, {
   functions: (x: FuncParam, y) => ({
     searchUserWithName: async ({ name }) => ({email:`${name}@gmail.com`}),
-    sentEmailToUser: async ({email}) => `Senting email to ${email}`
+    sentEmailToUser: async ({email, text}) => `Senting email to ${email}, with subject: ${text}`,
+    createSummary: async ({text}) => ({text: `Summary of ${text}`}),
   }),
   examples: [
     {
@@ -70,6 +76,13 @@ const init = implementChain(Schema, materials, {
         { sentEmailToUser: { email: "unknown" } }
       ],
     },
+    {
+      Input: "Create summary of BlockChain and Sent email to abcd@example.com",
+      Output: [
+        { createSummary: { text: "BlockChain" } },
+        { sentEmailToUser: { email: "abcd@example.com", text: "unknown" } }
+      ],
+    },
   ],
 });
 
@@ -83,7 +96,7 @@ const chain = await createExtraction(
   chainedActionPrompt
 );
 
-const res = await chain.invoke("find Diane, and sent email to her", {
+const res = await chain.invoke("find Diane, and sent a summary of 'health care' to her on email", {
   state: userStateData,
 });
 
@@ -93,6 +106,7 @@ const x = await executeChainActions(Schema, init, res, {
   permissions: {
     searchUserWithName: true,
     sentEmailToUser: true,
+    createSummary: true,
   },
   params: {
     ctx: {},

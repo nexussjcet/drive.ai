@@ -7,13 +7,16 @@ import { getZodChainedCombined, implementChain } from "@/initiative/chain";
 export const materials = getZodChainedCombined(Schema, UserState);
 export const init = implementChain(Schema, materials, {
   functions: (_extra: ExtraParams, state) => ({
-    convertFileFromTo: async () => await Promise.resolve("success"),
-    readFile: () => "success",
+    convertFileFromTo: async () => await Promise.resolve({status:"success"}),
+    readFile: async () => await Promise.resolve({status:"success"}),
     findContact: () => [{ name: "name", email: "email" }],
-    searchFile: () => ["success"],
-    sentEmail: () => "success",
-    summarizeText: () => "success",
-    writeFile: () => "success",
+    findOneContact: () => ({ name: "name", email: "email" }),
+    searchFile: async () => await Promise.resolve([{fileSource:"success"}]),
+    searchOneFile: async () => await Promise.resolve({fileSource:"success"}),
+    openFile: async () => await Promise.resolve({status:"success"}),
+    sentEmail: async () => await Promise.resolve({status:"success"}),
+    summarizeText: async () => await Promise.resolve({text:"success"}),
+    writeFile: async () => await Promise.resolve({status:"success"}),
   }),
   state: UserState,
   examples: [],
@@ -34,3 +37,4 @@ export const chain = await createExtraction(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   chainedActionPrompt,
 );
+

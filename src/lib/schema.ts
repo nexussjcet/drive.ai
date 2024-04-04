@@ -64,7 +64,7 @@ export const Schema = {
       "When action requires to open some file from source, to continue in execution order. ",
     )
     .args(z.object({ fileSource: z.string() }))
-    .returns(z.any()),
+    .returns(status),
 
   summarizeText: z
     .function()
