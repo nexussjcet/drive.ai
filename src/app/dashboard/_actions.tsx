@@ -63,24 +63,82 @@ async function listGoogleContacts() {
   }
 }
 
-// async function getSpecificFile(fileId: string) {
-//   try {
-//     const oauth2Client = await setupOAuth2Client();
-//     if (!oauth2Client) return null;
-//     const drive = google.drive({ version: "v3", auth: oauth2Client });
-//     const driveResponse = await drive.files.get({
-//       fileId: fileId,
-//       //   fields: "id, name, mimeType",
-//     });
-//     // console.log("driveResponse", driveResponse);
-//     const file = driveResponse;
-//     if (!file) {
-//       throw new Error("No file found");
-//     }
-//     return file;
-//   } catch (error) {
-//     console.error("Error getting file:", error);
-//   }
-// }
+async function sendEmail(recipient: string, subject: string, body: string) {
+  try {
+    const oauth2Client = await setupOAuth2Client();
+    const session = await getServerAuthSession();
+    if (!oauth2Client) return;
 
-export { listGoogleDriveFiles, listGoogleContacts };
+    const gmail = google.gmail({ version: "v1", auth: oauth2Client });
+
+    const rawEmail = makeRawEmail(
+      session?.user.email ?? "",
+      recipient,
+      subject,
+      body,
+    );
+    const encodedEmail = Buffer.from(rawEmail)
+      .toString("base64")
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, "");
+
+    await gmail.users.messages.send({
+      userId: "me",
+      requestBody: {
+        raw: encodedEmail,
+      },
+    });
+
+    console.log("Email sent successfully.");
+  } catch (error) {
+    console.error("Error sending email:", error);
+  }
+}
+
+function makeRawEmail(
+  sender: string,
+  recipient: string,
+  subject: string,
+  body: string,
+): string {
+  const emailLines = [
+    `From: ${sender}`,
+    `To: ${recipient}`,
+    "Content-Type: text/html; charset=utf-8",
+    `Subject: ${subject}`,
+    "",
+    body,
+  ];
+
+  return emailLines.join("\r\n");
+}
+
+async function getGoogleDriveFile(fileId: string) {
+  try {
+    const oauth2Client = await setupOAuth2Client();
+    if (!oauth2Client) return null;
+
+    const drive = google.drive({ version: "v3", auth: oauth2Client });
+    const fileResponse = await drive.files.get({
+      fileId: fileId,
+      fields: "id, name, mimeType",
+    });
+    const { name, mimeType, id } = fileResponse.data;
+    return {
+      id,
+      name,
+      mimeType,
+    };
+  } catch (error) {
+    console.error("Error getting file:", error);
+    return null;
+  }
+}
+
+export {
+  listGoogleDriveFiles,
+  listGoogleContacts,
+  sendEmail,
+  getGoogleDriveFile,
+};
