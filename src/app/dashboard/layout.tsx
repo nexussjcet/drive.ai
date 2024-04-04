@@ -68,6 +68,8 @@ export default async function RootLayout({
   const files = await listGoogleDriveFiles();
   const contacts = await listGoogleContacts();
 
+  console.log("files", contacts);
+
   const defaultData = [
     {
       value: "searching file",

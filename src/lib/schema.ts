@@ -122,7 +122,7 @@ export const Schema = {
 export const AvailableActionsZod = z.object(Schema);
 
 export const GetZodParam = <K extends keyof RawAvailableActions>(key: K) => {
-  return Schema[key]._def.args.items[0];
+  return Schema[key]?._def.args.items[0];
 };
 
 export const GetZodReturn = <K extends keyof RawAvailableActions>(key: K) => {
@@ -153,8 +153,7 @@ export const permissionZod = z.object(
   ),
 ) as PermissionZod;
 
-
-export const AllowALL:{[k in keyof RawAvailableActions]:true} = {
+export const AllowALL: { [k in keyof RawAvailableActions]: true } = {
   convertFileFormat: true,
   readFile: true,
   writeFile: true,
@@ -165,4 +164,4 @@ export const AllowALL:{[k in keyof RawAvailableActions]:true} = {
   findOneContact: true,
   searchFile: true,
   searchOneFile: true,
-}
+};
