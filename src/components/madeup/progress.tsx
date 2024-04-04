@@ -74,7 +74,9 @@ const Timeline: React.FC<TimelineProps> = ({ timelineData }) => {
           {timelineData.map((data, index) => (
             <li key={index} className="timeline-item mt-8 flex gap-8">
               <span className="timeline-item-icon -ml-14 flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-100 text-gray-400">
-                {data.permission ? getIcon(data.value) : getIcon(data.error)}
+                {data.permission
+                  ? getIcon(data.value)
+                  : getIcon(data.error ?? "")}
               </span>
               <div
                 className={`timeline-item-description flex flex-col items-center  rounded-xl ${
@@ -86,7 +88,9 @@ const Timeline: React.FC<TimelineProps> = ({ timelineData }) => {
                 } p-2`}
               >
                 <p className="flex flex-row items-center gap-5 rounded-xl">
-                  {data.permission ? getIcon(data.value) : getIcon(data.error)}
+                  {data.permission
+                    ? getIcon(data.value)
+                    : getIcon(data.error ?? "")}
                   {data.permission ? data.value : data.error}
                 </p>
                 {!data.permission && (

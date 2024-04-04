@@ -379,23 +379,20 @@ export default async function RootLayout({
                 </DrawerContent>
               </Drawer>
             </header>
-            <main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-4">
-              <div className="relative hidden flex-col items-start gap-8 md:flex">
+            <main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-4 ">
+              <div className="relative hidden flex-col items-start gap-8 rounded-xl bg-muted/90 p-3 md:flex">
                 <div className="grid-flow-rows grid w-full items-start gap-6">
-                  <fieldset className="grid gap-6 rounded-lg border p-4">
+                  <fieldset className="grid gap-6 rounded-lg border bg-white p-4">
                     <legend className="-ml-1 px-1 text-sm font-medium">
                       Files
                     </legend>
                     <SearchItems files={files} />
                   </fieldset>
-                  <fieldset className="grid gap-6 rounded-lg border p-4">
+                  <fieldset className="grid gap-6 rounded-lg border bg-white p-4">
                     <legend className="-ml-1 px-1 text-sm font-medium">
                       Contacts
                     </legend>
-                    <div className="grid gap-3">
-                      {/* <Label htmlFor="role">Role</Label> */}
-                    </div>
-                    <div className="no-scrollbar flex h-[150px] flex-row flex-wrap gap-3 overflow-y-auto">
+                    <div className="no-scrollbar flex h-[140px] flex-row flex-wrap gap-3 overflow-y-auto">
                       {!contacts ? (
                         <div className="s flex w-full                                                                                                                                                                items-center text-center">
                           No contacts found
@@ -423,7 +420,7 @@ export default async function RootLayout({
                   </fieldset>
                 </div>
               </div>
-              <div className="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2">
+              <div className="relative flex h-full min-h-[50vh] flex-col self-center rounded-xl bg-muted/50 p-4 lg:col-span-2">
                 <Badge variant="outline" className="absolute right-3 top-3">
                   Process
                 </Badge>
