@@ -4,7 +4,7 @@ import type { CTX } from "@/server/api/root";
 import {} from "@trpc/server/unstable-core-do-not-import";
 import z, { type infer as Infer } from "zod";
 
-const fileEnum = z.enum(["txt", "pdf", "md"]);
+const fileEnum = z.enum(["markdown", "html"]);
 
 const status = z.object({
   status: z.union([
@@ -15,35 +15,38 @@ const status = z.object({
   ]),
 });
 
+const text = z.object({
+  text: z.string(),
+});
+
 export const UserState = {} satisfies State;
 export type ExtraParams = {
-  ctx: CTX;
+  ctx: CTX | null;
   //   extra: {},
 };
 
 export const Schema = {
-  convertFileFromTo: z
+  convertFileFormat: z
     .function()
     .describe(
-      "When action requires to convert one form to another, to continue in execution order. ",
+      "When action requires to convert file format to another, please read curresponding file before convertion, and write to continue in execution order. ",
     )
     .args(
       z.object({
-        fromFileType: fileEnum,
-        toFileType: fileEnum,
-        fileSource: z.string(),
-        fileDestination: z.string(),
+        text: z.string(),
+        fileSourceType: fileEnum,
+        fileDestinationType: fileEnum,
       }),
     )
-    .returns(status),
+    .returns(text),
 
   readFile: z
     .function()
     .describe(
       "When action requires to read some file from source, to continue in execution order. ",
     )
-    .args(z.object({ fileSource: z.string() }))
-    .returns(z.any()),
+    .args(z.object({ fileSource: z.string(), fileSourceType: fileEnum }))
+    .returns(z.object({ text: z.string() })),
 
   writeFile: z
     .function()
@@ -53,6 +56,7 @@ export const Schema = {
     .args(
       z.object({
         fileDestination: z.string(),
+        fileDestinationType: fileEnum,
         text: z.string().optional(),
       }),
     )
@@ -79,9 +83,7 @@ export const Schema = {
     .describe(
       "When action requires to send email to someone, to continue in execution order. ",
     )
-    .args(
-      z.object({ email: z.string(), subject: z.string(), body: z.string() }),
-    )
+    .args(z.object({ email: z.string(), text: z.string() }))
     .returns(status),
 
   findContact: z
@@ -150,3 +152,17 @@ export const permissionZod = z.object(
     {},
   ),
 ) as PermissionZod;
+
+
+export const AllowALL:{[k in keyof RawAvailableActions]:true} = {
+  convertFileFormat: true,
+  readFile: true,
+  writeFile: true,
+  openFile: true,
+  summarizeText: true,
+  sentEmail: true,
+  findContact: true,
+  findOneContact: true,
+  searchFile: true,
+  searchOneFile: true,
+}
