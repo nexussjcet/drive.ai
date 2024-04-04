@@ -53,6 +53,12 @@ import SearchItems from "./_components/SearchItems";
 import Timeline from "@/components/madeup/progress";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { CardDemo } from "@/components/madeup/permission_false";
 export default async function RootLayout({
   children,
 }: {
@@ -82,7 +88,7 @@ export default async function RootLayout({
       permission: true,
     },
     {
-      value: "converting file",
+      error: "converting file",
       key: "convertFileFromTo",
       iteration: 3,
       permission: false,
@@ -226,14 +232,24 @@ export default async function RootLayout({
                 </Tooltip>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="mt-auto rounded-lg"
-                      aria-label="Account"
-                    >
-                      <SquareUser className="size-5" />
-                    </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="mt-auto rounded-lg"
+                          aria-label="Account"
+                        >
+                          <SquareUser className="size-5" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        align="end"
+                        className="absolute bottom-0 w-auto"
+                      >
+                        <CardDemo />
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </TooltipTrigger>
                   <TooltipContent side="right" sideOffset={5}>
                     Account
@@ -409,7 +425,7 @@ export default async function RootLayout({
               </div>
               <div className="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2">
                 <Badge variant="outline" className="absolute right-3 top-3">
-                  Output
+                  Process
                 </Badge>
                 <Timeline timelineData={defaultData} />
 

@@ -8,12 +8,14 @@ import {
 } from "lucide-react";
 import React from "react";
 import { Card, CardContent } from "../ui/card";
+import { Button } from "../ui/button";
 
 type TimelineData = {
   value: string;
   key: string;
   iteration: number;
   permission: boolean;
+  error?: string;
 };
 
 type TimelineProps = {
@@ -23,7 +25,7 @@ type TimelineProps = {
 const Timeline: React.FC<TimelineProps> = ({ timelineData }) => {
   // Function to determine the corresponding icon based on the value
   const getIcon = (value: string) => {
-    const status = value.toLowerCase().includes("searching")
+    const status = value?.toLowerCase().includes("searching")
       ? "searching"
       : value.toLowerCase().includes("sending")
         ? "sending"
@@ -72,10 +74,10 @@ const Timeline: React.FC<TimelineProps> = ({ timelineData }) => {
           {timelineData.map((data, index) => (
             <li key={index} className="timeline-item mt-8 flex gap-8">
               <span className="timeline-item-icon -ml-14 flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-100 text-gray-400">
-                {getIcon(data.value)}
+                {data.permission ? getIcon(data.value) : getIcon(data.error)}
               </span>
               <div
-                className={`timeline-item-description flex items-center  rounded-xl ${
+                className={`timeline-item-description flex flex-col items-center  rounded-xl ${
                   data.permission
                     ? "bg-green-200"
                     : !data.permission
@@ -83,10 +85,15 @@ const Timeline: React.FC<TimelineProps> = ({ timelineData }) => {
                       : getRandomColor()
                 } p-2`}
               >
-                <p className="flex items-center gap-5 rounded-xl">
-                  {getIcon(data.value)}
-                  {data.value}
+                <p className="flex flex-row items-center gap-5 rounded-xl">
+                  {data.permission ? getIcon(data.value) : getIcon(data.error)}
+                  {data.permission ? data.value : data.error}
                 </p>
+                {!data.permission && (
+                  <Button className="self-end bg-red-400 text-white">
+                    click to allow
+                  </Button>
+                )}
               </div>
             </li>
           ))}
