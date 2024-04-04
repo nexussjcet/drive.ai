@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Meteors } from "@/components/ui/meteors";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
+import InputPrompt from "@/components/instances/input";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
