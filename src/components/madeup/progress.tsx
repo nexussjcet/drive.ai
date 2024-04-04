@@ -48,7 +48,26 @@ const getComponent = (value: keyof ChainReturn<typeof Schema>) => {
       return null;
   }
 };
-
+const getLogo = (value: keyof ChainReturn<typeof Schema>) => {
+  switch (value) {
+    case "summarizeText":
+      return <Shrink />;
+    case "convertFileFormat":
+      return <FolderSync />;
+    case "findOneContact":
+      return <Search />;
+    case "sentEmail":
+      return <Send />;
+    case "readFile":
+      return <ScanText />;
+    case "searchFile":
+      return <Search />;
+    case "writeFile":
+      return <NotebookPen />;
+    default:
+      return null;
+  }
+};
 type TimelineProps = ChainReturn<typeof Schema>;
 
 const Timeline: React.FC<{ data: TimelineProps }> = ({ data }) => {
@@ -56,13 +75,14 @@ const Timeline: React.FC<{ data: TimelineProps }> = ({ data }) => {
     <ol className="timeline max-w-700 mx-auto flex flex-col border-l-2 border-gray-200 py-8 pl-8 text-base">
       {Object.entries(data).map(([key, value], index) => {
         const Component = getComponent(key as keyof ChainReturn<typeof Schema>);
+
         return (
           <li key={index} className="timeline-item mt-8 flex gap-8">
             <span className="timeline-item-icon -ml-14 flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-100 text-gray-400">
-              {Component && <Component data={value.value} />}
+              {getLogo(key as keyof ChainReturn<typeof Schema>)}
             </span>
             <div
-              className={`timeline-item-description flex items-center rounded-xl ${
+              className={`timeline-item-description flex w-[300px] items-center rounded-xl ${
                 value.permission
                   ? "bg-green-200"
                   : !value.permission
