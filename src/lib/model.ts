@@ -6,7 +6,7 @@ import {
   getZodChainedCombined,
   implementChain,
 } from "@/initiative/chain";
-// import pandoc from "pandoc";
+import { sendEmail } from "@/app/dashboard/_actions";
 
 export const model = new TogetherAI({
   modelName: "mistralai/Mixtral-8x7B-Instruct-v0.1",
@@ -15,30 +15,30 @@ export const model = new TogetherAI({
 
 export const materials = getZodChainedCombined(Schema, UserState);
 export const init = implementChain(Schema, materials, {
-  functions: (_extra: ExtraParams, state) => ({
+  functions: (_extra, state) => ({
     convertFileFormat: async ({
       fileDestinationType,
       fileSourceType,
       text,
     }) => {
-      let resultText = "";
-      // pandoc.convert(
-      //   fileSourceType,
-      //   text,
-      //   [fileDestinationType],
-      //   (result, err) => {
-      //     resultText = result[fileDestinationType];
-      //   },
-      // );
-      return { text: resultText };
+      const res = await model.invoke(
+        `Just Convert the ${fileSourceType} text  to ${fileDestinationType}. Dont write code. DOnt explain anything. Just convert like normal. Dont add styles. Text:'${text}'`,
+      );
+      return { text: res };
     },
     readFile: async () => await Promise.resolve({ text: "success" }),
-    findContact: () => [{ name: "name", email: "email" }],
-    findOneContact: () => ({ name: "name", email: "email" }),
+    findOneContact: async ({ name }) => {
+      return { name: "unknown", email: "unknown" };
+      // console.log(state?.listOfContacts)
+      // return state?.listOfContacts.find((c) => c.name.includes(name)) ?? { name: "unknown", email: "unknown" }
+    },
     searchFile: async () => await Promise.resolve([{ fileSource: "success" }]),
     searchOneFile: async () => await Promise.resolve({ fileSource: "success" }),
     openFile: async () => await Promise.resolve({ status: "success" }),
-    sentEmail: async () => await Promise.resolve({ status: "success" }),
+    sentEmail: async ({ email, text }) => {
+      await sendEmail(email, "Email from Drive AI", text);
+      return { status: "success" };
+    },
     summarizeText: async ({ text }) => {
       const res = await model.invoke(
         `Summarize the concept in 40 or 50 words. Concept is ${text}`,
@@ -106,18 +106,16 @@ export const chain = await createExtraction(
   chainedActionPrompt,
 );
 
-const res = await chain.invoke(
-  "Convert markdown to html, text:'# Header \n ## Header'",
-);
+// const res = await chain.invoke("Convert markdown to html, text:'# Header \n ## Header'");
 
-console.log(res.response.validated?.success ? res.response.validated.data : "");
+// console.log(res.response.validated?.success ? res.response.validated.data : "");
 
-const x = await executeChainActions(Schema, init, res, {
-  permissions: AllowALL,
-  params: {
-    ctx: null,
-    extra: {},
-  },
-});
+// const x = await executeChainActions(Schema, init, res, {
+//   permissions: AllowALL,
+//   params: {
+//     ctx: null,
+//     extra: {},
+//   },
+// });
 
-console.log(x);
+// console.log(x);

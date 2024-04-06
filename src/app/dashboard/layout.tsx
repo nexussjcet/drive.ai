@@ -59,6 +59,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CardDemo } from "@/components/madeup/permission_false";
+import InputPrompt from "./_components/sentprompt";
 export default async function RootLayout({
   children,
 }: {
@@ -68,64 +69,19 @@ export default async function RootLayout({
   const files = await listGoogleDriveFiles();
   const contacts = await listGoogleContacts();
 
-  console.log("files", contacts);
-
-  const defaultData = [
-    {
-      value: "searching file",
-      key: "searchFile",
-      iteration: 0,
-      permission: true,
-    },
-    {
-      value: "reading file",
-      key: "readFile",
-      iteration: 1,
-      permission: true,
-    },
-    {
-      value: "writing file",
-      key: "writeFile",
-      iteration: 2,
-      permission: true,
-    },
-    {
-      error: "converting file",
-      key: "convertFileFromTo",
-      iteration: 3,
-      permission: false,
-    },
-    {
-      value: "summarizing file",
-      key: "summarizeText",
-      iteration: 4,
-      permission: true,
-    },
-    {
-      value: "searching contact",
-      key: "findContact",
-      iteration: 5,
-      permission: true,
-    },
-    {
-      value: "sending email",
-      key: "sentEmail",
-      iteration: 6,
-      permission: true,
-    },
-  ];
-  if (!session) {
-    redirect("/api/auth/signin");
-  }
   const getRandomColor = () => {
     const colors = [
-      "bg-red-200",
-      "bg-blue-200",
-      "bg-green-200",
-      "bg-yellow-200",
+      "bg-red-500",
+      "bg-yellow-500",
+      "bg-green-500",
+      "bg-blue-500",
+      "bg-indigo-500",
+      "bg-purple-500",
+      "bg-pink-500",
     ];
     return colors[Math.floor(Math.random() * colors.length)];
   };
+
   return (
     <Providers>
       <>
@@ -400,8 +356,8 @@ export default async function RootLayout({
                           No contacts found
                         </div>
                       ) : (
-                        contacts?.map((contact) => (
-                          <TooltipProvider>
+                        contacts?.map((contact, i) => (
+                          <TooltipProvider key={i}>
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <div
@@ -426,47 +382,7 @@ export default async function RootLayout({
                 <Badge variant="outline" className="absolute right-3 top-3">
                   Process
                 </Badge>
-                <Timeline timelineData={defaultData} />
-
-                <div className="flex-1" />
-                <form className="relative overflow-hidden rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring">
-                  <Label htmlFor="message" className="sr-only">
-                    Message
-                  </Label>
-                  <Textarea
-                    id="message"
-                    placeholder="Type your message here..."
-                    className="min-h-12 resize-none border-0 p-3 shadow-none focus-visible:ring-0"
-                  />
-                  <div className="flex items-center p-3 pt-0">
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <Paperclip className="size-4" />
-                            <span className="sr-only">Attach file</span>
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top">Attach File</TooltipContent>
-                      </Tooltip>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <Mic className="size-4" />
-                            <span className="sr-only">Use Microphone</span>
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent side="top">
-                          Use Microphone
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                    <Button type="submit" size="sm" className="ml-auto gap-1.5">
-                      Send Message
-                      <CornerDownLeft className="size-3.5" />
-                    </Button>
-                  </div>
-                </form>
+                <InputPrompt />
               </div>
               <div className="relative hidden flex-col items-start gap-8 md:flex">
                 {children}

@@ -1,6 +1,6 @@
 import { type AFC } from "@/lib/schema";
 
-export const readFile:AFC<"readFile"> = ({data}) => {
+export const convertFileFormat:AFC<"convertFileFormat"> = ({data}) => {
     return ( 
         <div>
             <div>{data.text}</div>

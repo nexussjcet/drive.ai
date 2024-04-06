@@ -11,14 +11,15 @@ export const chainRouter = createTRPCRouter({
       z.object({
         permissions: permissionZod,
         prompt: z.string(),
-        state: z.object(UserState)
+        state: z.object(UserState).optional()
       }),
     )
     .mutation(async ({ input, ctx }) => {
       const { permissions, prompt, state } = input;
-      const res = await chain.invoke(prompt, {
-        state
-      });
+
+      console.log(prompt, state);
+
+      const res = await chain.invoke(prompt);
 
       console.log(
         res.response.validated?.success ? res.response.validated.data : "",

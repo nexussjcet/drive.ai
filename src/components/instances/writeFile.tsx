@@ -1,11 +1,9 @@
 import { type AFC } from "@/lib/schema";
 
-const writeFile:AFC<"writeFile"> = ({data}) => {
+export const writeFile:AFC<"writeFile"> = ({data}) => {
     return ( 
         <div>
-            <div>{data}</div>
+            <div>{data.status}</div>
         </div>
      );
 }
- 
-export default writeFile;
